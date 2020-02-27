@@ -12,20 +12,21 @@ using System.Windows.Forms;
 
 namespace OpenBruteCore
 {
-    public class allMechanic
+    public class AllMechanic
     {
         
         public static object accLock = new object();
-        private static object resultLock = new object();
-        
-        private static object checkLock = new object();
-        public static void loadSource()
+        private static readonly object resultLock = new object();
+        public static void LoadSource()
         {
             try
             {
 
-                var FileDialog = new OpenFileDialog(); FileDialog.Filter = "Source (*.txt)|*.txt";
-                FileDialog.Multiselect = true;
+                var FileDialog = new OpenFileDialog
+                {
+                    Filter = "Source (*.txt)|*.txt",
+                    Multiselect = true
+                };
                 if (FileDialog.ShowDialog() == DialogResult.OK)
                 {
                     globalList.sourceList.Clear();
@@ -43,12 +44,14 @@ namespace OpenBruteCore
             }
         }
 
-        public static void loadProxy()
+        public static void LoadProxy()
         {
             try
             {
-                var FileDialog = new OpenFileDialog(); FileDialog.Filter = "Proxy (*.txt)|*.txt";
-                if (FileDialog.ShowDialog() == DialogResult.OK)
+                var FileDialog = new OpenFileDialog
+                {
+                    Filter = "Proxy (*.txt)|*.txt"
+                }; if (FileDialog.ShowDialog() == DialogResult.OK)
                 {
                     globalList.proxyList.Clear();
                     globalList.proxyList.AddRange(File.ReadAllLines(FileDialog.FileName));
@@ -84,7 +87,7 @@ namespace OpenBruteCore
             }
         }
 
-        public static void startWork()
+        public static void StartWork()
         {
             if (globalList.proxyList.Count == 0)
             {
@@ -102,9 +105,11 @@ namespace OpenBruteCore
                 for (int thrcount = 0; thrcount < globalList.thCount; thrcount++)
                 {
 
-                    th = new Thread(mainWorcher);
-                    th.IsBackground = false;
-                    th.Priority = ThreadPriority.Highest;
+                    th = new Thread(MainWorcher)
+                    {
+                        IsBackground = false,
+                        Priority = ThreadPriority.Highest
+                    };
                     globalList.threadList.Add(th);
                     th.Start();
                 }
@@ -116,7 +121,7 @@ namespace OpenBruteCore
 
 
 
-        private static void mainWorcher()
+        private static void MainWorcher()
         {
             while (globalList.worck)
             {
@@ -125,7 +130,7 @@ namespace OpenBruteCore
                     string acc = string.Empty;
                     string login = string.Empty;
                     string pass = string.Empty;
-                    lock (allMechanic.accLock)
+                    lock (AllMechanic.accLock)
                     {
                         if (globalList.sourceList.Count > 0)
                         {
@@ -167,9 +172,9 @@ namespace OpenBruteCore
 
         private static void DataResult(string result, string acc)
         {
-            string file = "";
             lock (resultLock)
             {
+                string file;
                 if (result == "goodbal")
                 {
                     file = Path.Combine(globalList.folderName, "Premium.txt");
@@ -298,7 +303,7 @@ namespace OpenBruteCore
         }
 
 
-        public static void stopWork()
+        public static void StopWork()
         {
             globalList.workStatus = "nothing";
             foreach (Thread thread in globalList.threadList)

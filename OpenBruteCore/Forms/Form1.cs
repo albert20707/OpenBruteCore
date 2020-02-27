@@ -15,7 +15,7 @@ namespace OpenBruteCore
 {
     public partial class Form1 : Form
     {
-        allMechanic mech = new allMechanic();
+        AllMechanic mech = new AllMechanic();
         Thread th;
         public Form1()
         {
@@ -111,21 +111,21 @@ namespace OpenBruteCore
 
         private void panel2_Click(object sender, EventArgs e)
         {
-            allMechanic.loadSource();
+            AllMechanic.LoadSource();
         }
         private void lbSource_Click(object sender, EventArgs e)
         {
-            allMechanic.loadSource();
+            AllMechanic.LoadSource();
         }
 
         private void lbProxy_Click(object sender, EventArgs e)
         {
-            allMechanic.loadProxy();
+            AllMechanic.LoadProxy();
         }
 
         private void panel6_Click(object sender, EventArgs e)
         {
-            allMechanic.loadProxy();
+            AllMechanic.LoadProxy();
         }
 
         private void lbSettings_Click(object sender, EventArgs e)
@@ -151,11 +151,11 @@ namespace OpenBruteCore
                 globalList.proxyUrl = tbProxy.Text;
                 proxyTimer.Interval = Convert.ToInt32(nudProxyInterval.Value * 1000);
                 proxyTimer.Start();
-                allMechanic.RefreshProxy();
+                AllMechanic.RefreshProxy();
                 lbProxy.Text = globalList.proxyList.Count.ToString();
             }else
             {
-                allMechanic.RefreshProxy();
+                AllMechanic.RefreshProxy();
             }
             
 
@@ -164,14 +164,14 @@ namespace OpenBruteCore
         private void proxyTimer_Tick(object sender, EventArgs e)
         {
             
-            allMechanic.RefreshProxy();
+            AllMechanic.RefreshProxy();
         }
 
         
 
         private void label11_Click(object sender, EventArgs e)
         {
-            allMechanic.startWork();
+            AllMechanic.StartWork();
             statTimer.Enabled = true;
             statTimer.Start();
         }
@@ -184,12 +184,12 @@ namespace OpenBruteCore
                 globalList.proxyUrl = tbProxy.Text;
                 proxyTimer.Interval = Convert.ToInt32(nudProxyInterval.Value * 1000);
                 proxyTimer.Start();
-                allMechanic.RefreshProxy();
+                AllMechanic.RefreshProxy();
                 lbProxy.Text = globalList.proxyList.Count.ToString();
             }
             else
             {
-                allMechanic.RefreshProxy();
+                AllMechanic.RefreshProxy();
             }
         }
 
@@ -215,14 +215,14 @@ namespace OpenBruteCore
 
         private void panel9_Click(object sender, EventArgs e)
         {
-            allMechanic.startWork();
+            AllMechanic.StartWork();
             statTimer.Enabled = true;
             statTimer.Start();
         }
 
         private void label12_Click(object sender, EventArgs e)
         {
-            allMechanic.stopWork();
+            AllMechanic.StopWork();
             statTimer.Enabled = false;
             statTimer.Stop();
         }
@@ -242,7 +242,7 @@ namespace OpenBruteCore
 
         private void panel10_Click(object sender, EventArgs e)
         {
-            allMechanic.stopWork();
+            AllMechanic.StopWork();
             statTimer.Enabled = false;
             statTimer.Stop();
         }
