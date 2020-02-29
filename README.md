@@ -1,4 +1,6 @@
-## Welcome to GitHub Pages
+## Welcome to OpenBruteCore repo ! 
+My name is FUKTTT and I made open core for creating brutforces
+- [x] This is a complete item (TESTS)
 
 You can use the [editor on GitHub](https://github.com/fukttt/OpenBruteCore/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
 
