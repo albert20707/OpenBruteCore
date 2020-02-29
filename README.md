@@ -1,4 +1,4 @@
-## Welcome to OpenBruteCore repo ! 
+## Welcome to  [OpenBruteCore](https://fukttt.github.io/OpenBruteCore/) repo ! 
 My name is FUKTTT and I made open core for creating brutforces
 - [x] This is a complete item (TESTS)
 
