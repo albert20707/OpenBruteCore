@@ -1,16 +1,19 @@
 ## :space_invader: Welcome to  [OpenBruteCore](https://fukttt.github.io/OpenBruteCore/) repo ! 
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
-My name is FUKTTT and I made open core for creating brutforces
-- [x] This is a complete item (TESTS)
+## :construction: All code and features made only for bruteforce your own account ! If u forgot your paswword u can easily bruteforce it ! Attacking not your personally account - illegal, do it at your own risk !
 
-You can use the [editor on GitHub](https://github.com/fukttt/OpenBruteCore/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+My name is FUKTTT and I made open core for creating brutforces easily
+With this sources u can understand how bruteforce attack works
+
+## What i made for [1.0 version](https://github.com/fukttt/OpenBruteCore/releases/tag/1.0): 
+- [x] Bruteforce attack to PornHub premium page
+- [x] U can use proxies if u want
+- [x] Parsing csrf-token for authorize on PornHub
+- [x] Checking if account is good - put it in `good.txt` file 
+- [ ] Proxy checker
+- [ ] Duplicate delete
+- [ ] Better code for core
+
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
