@@ -26,7 +26,6 @@ namespace OpenBruteCore
                 {
                     GlobalList.sourceList.Clear();
                     foreach (var file in FileDialog.FileNames) GlobalList.sourceList.AddRange(File.ReadAllLines(file));
-
                     GlobalList.frm.lbSource.Text = GlobalList.sourceList.Count.ToString();
                 }
 

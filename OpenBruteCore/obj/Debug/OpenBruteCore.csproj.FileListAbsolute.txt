@@ -38,5 +38,4 @@ C:\Users\bxsxvc\Desktop\Готовый софт\OpenBruteCore\OpenBruteCore\obj\
 C:\Users\bxsxvc\Desktop\Готовый софт\OpenBruteCore\OpenBruteCore\obj\Debug\OpenBruteCore.csproj.CopyComplete
 C:\Users\bxsxvc\Desktop\Готовый софт\OpenBruteCore\OpenBruteCore\obj\Debug\OpenBruteCore.exe
 C:\Users\bxsxvc\Desktop\Готовый софт\OpenBruteCore\OpenBruteCore\obj\Debug\OpenBruteCore.pdb
-C:\Users\bxsxvc\Desktop\Готовый софт\OpenBruteCore\OpenBruteCore\bin\Debug\OpenBruteCore.exe.CodeAnalysisLog.xml
-C:\Users\bxsxvc\Desktop\Готовый софт\OpenBruteCore\OpenBruteCore\bin\Debug\OpenBruteCore.exe.lastcodeanalysissucceeded
+C:\Users\bxsxvc\Desktop\Готовый софт\OpenBruteCore\OpenBruteCore\obj\Debug\OpenBruteCore.csprojAssemblyReference.cache
