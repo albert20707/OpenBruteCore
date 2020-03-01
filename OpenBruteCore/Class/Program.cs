@@ -16,8 +16,8 @@ namespace OpenBruteCore
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            globalList.frm = new Form1();
-            Application.Run(globalList.frm);
+            GlobalList.frm = new Form1();
+            Application.Run(GlobalList.frm);
         }
     }
 }

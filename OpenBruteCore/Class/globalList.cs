@@ -8,10 +8,10 @@ using System.Windows.Forms;
 
 namespace OpenBruteCore
 {
-    public class globalList
+    public class GlobalList
     {
-        public static List<string> sourceList = new List<string>();
-        public static List<string> proxyList = new List<string>();
+        public static readonly List<string> sourceList = new List<string>();
+        public static readonly List<string> ProxyList = new List<string>();
         public static Form1 frm;
         public static Settings set;
         public static bool worck;
@@ -23,7 +23,7 @@ namespace OpenBruteCore
         public static List<Thread> threadList = new List<Thread>();
         public static int good = 0, bad = 0, error = 0, projecterror = 0, corerror = 0;
         public static string time = DateTime.Now.ToString("HH_mm_ss");
-        public static string folderName = "RESULT-FOLDER/[" + globalList.time + "]";
+        public static string folderName = "RESULT-FOLDER/[" + GlobalList.time + "]";
 
     }
 }

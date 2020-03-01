@@ -15,12 +15,7 @@ namespace OpenBruteCore
 {
     public partial class Form1 : Form
     {
-        AllMechanic mech = new AllMechanic();
-        Thread th;
-        public Form1()
-        {
-            InitializeComponent();
-        }
+        public Form1() => InitializeComponent();
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
@@ -98,14 +93,14 @@ namespace OpenBruteCore
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            if (globalList.set == null)
+            if (GlobalList.set == null)
             {
-                globalList.set = new Settings();
-                globalList.set.Show();
+                GlobalList.set = new Settings();
+                GlobalList.set.Show();
             }
             else
             {
-                globalList.set.Show();
+                GlobalList.set.Show();
             }
         }
 
@@ -130,14 +125,14 @@ namespace OpenBruteCore
 
         private void lbSettings_Click(object sender, EventArgs e)
         {
-            if (globalList.set == null)
+            if (GlobalList.set == null)
             {
-                globalList.set = new Settings();
-                globalList.set.Show();
+                GlobalList.set = new Settings();
+                GlobalList.set.Show();
             }
             else
             {
-                globalList.set.Show();
+                GlobalList.set.Show();
             }
             
 
@@ -148,11 +143,11 @@ namespace OpenBruteCore
             if (cbProxyUpdate.Checked)
             {
                 proxyTimer.Enabled = true;
-                globalList.proxyUrl = tbProxy.Text;
+                GlobalList.proxyUrl = tbProxy.Text;
                 proxyTimer.Interval = Convert.ToInt32(nudProxyInterval.Value * 1000);
                 proxyTimer.Start();
                 AllMechanic.RefreshProxy();
-                lbProxy.Text = globalList.proxyList.Count.ToString();
+                lbProxy.Text = GlobalList.ProxyList.Count.ToString();
             }else
             {
                 AllMechanic.RefreshProxy();
@@ -181,11 +176,11 @@ namespace OpenBruteCore
             if (cbProxyUpdate.Checked)
             {
                 proxyTimer.Enabled = true;
-                globalList.proxyUrl = tbProxy.Text;
+                GlobalList.proxyUrl = tbProxy.Text;
                 proxyTimer.Interval = Convert.ToInt32(nudProxyInterval.Value * 1000);
                 proxyTimer.Start();
                 AllMechanic.RefreshProxy();
-                lbProxy.Text = globalList.proxyList.Count.ToString();
+                lbProxy.Text = GlobalList.ProxyList.Count.ToString();
             }
             else
             {
@@ -231,11 +226,11 @@ namespace OpenBruteCore
         {
             try
             {
-                lbGood.Text = globalList.good.ToString();
-                lbBad.Text = globalList.bad.ToString();
-                lbError.Text = globalList.error + "/" + globalList.projecterror + "/" + globalList.corerror;
-                lbSource.Text = globalList.sourceList.Count.ToString();
-                lbProxy.Text = globalList.proxyList.Count.ToString();
+                lbGood.Text = GlobalList.good.ToString();
+                lbBad.Text = GlobalList.bad.ToString();
+                lbError.Text = GlobalList.error + "/" + GlobalList.projecterror + "/" + GlobalList.corerror;
+                lbSource.Text = GlobalList.sourceList.Count.ToString();
+                lbProxy.Text = GlobalList.ProxyList.Count.ToString();
             }
             catch { }
         }
@@ -250,14 +245,14 @@ namespace OpenBruteCore
 
         private void panel7_Click(object sender, EventArgs e)
         {
-            if (globalList.set == null)
+            if (GlobalList.set == null)
             {
-                globalList.set = new Settings();
-                globalList.set.Show();
+                GlobalList.set = new Settings();
+                GlobalList.set.Show();
             }
             else
             {
-                globalList.set.Show();
+                GlobalList.set.Show();
             }
         }
     }

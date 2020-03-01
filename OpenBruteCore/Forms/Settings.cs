@@ -12,10 +12,7 @@ namespace OpenBruteCore
 {
     public partial class Settings : Form
     {
-        public Settings()
-        {
-            InitializeComponent();
-        }
+        public Settings() => InitializeComponent();
 
         private void pictureBox2_Click(object sender, EventArgs e)
         {
@@ -31,23 +28,23 @@ namespace OpenBruteCore
 
         private void Settings_Load(object sender, EventArgs e)
         {
-            this.Top = globalList.frm.Top;
-            this.Left = globalList.frm.Left + 668;
+            this.Top = GlobalList.frm.Top;
+            this.Left = GlobalList.frm.Left + 668;
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            globalList.proxyType = comboBox1.Text;
+            GlobalList.proxyType = comboBox1.Text;
         }
 
         private void numericUpDown3_ValueChanged(object sender, EventArgs e)
         {
-            globalList.thCount = Convert.ToInt32(numericUpDown3.Value);
+            GlobalList.thCount = Convert.ToInt32(numericUpDown3.Value);
         }
 
         private void numericUpDown2_ValueChanged(object sender, EventArgs e)
         {
-            globalList.timeOut = Convert.ToInt32(numericUpDown2.Value);
+            GlobalList.timeOut = Convert.ToInt32(numericUpDown2.Value);
         }
     }
 }

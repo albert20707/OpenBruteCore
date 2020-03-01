@@ -26,3 +26,17 @@ C:\Users\bxsxvc\Desktop\Готовый софт\OBC\OpenBruteCore\OpenBruteCore\
 C:\Users\bxsxvc\Desktop\Готовый софт\OBC\OpenBruteCore\OpenBruteCore\obj\Debug\OpenBruteCore.csproj.CopyComplete
 C:\Users\bxsxvc\Desktop\Готовый софт\OBC\OpenBruteCore\OpenBruteCore\obj\Debug\OpenBruteCore.exe
 C:\Users\bxsxvc\Desktop\Готовый софт\OBC\OpenBruteCore\OpenBruteCore\obj\Debug\OpenBruteCore.pdb
+C:\Users\bxsxvc\Desktop\Готовый софт\OpenBruteCore\OpenBruteCore\bin\Debug\OpenBruteCore.exe.config
+C:\Users\bxsxvc\Desktop\Готовый софт\OpenBruteCore\OpenBruteCore\bin\Debug\OpenBruteCore.exe
+C:\Users\bxsxvc\Desktop\Готовый софт\OpenBruteCore\OpenBruteCore\bin\Debug\OpenBruteCore.pdb
+C:\Users\bxsxvc\Desktop\Готовый софт\OpenBruteCore\OpenBruteCore\bin\Debug\Leaf.xNet.dll
+C:\Users\bxsxvc\Desktop\Готовый софт\OpenBruteCore\OpenBruteCore\bin\Debug\Leaf.xNet.xml
+C:\Users\bxsxvc\Desktop\Готовый софт\OpenBruteCore\OpenBruteCore\obj\Debug\OpenBruteCore.Form1.resources
+C:\Users\bxsxvc\Desktop\Готовый софт\OpenBruteCore\OpenBruteCore\obj\Debug\OpenBruteCore.Settings.resources
+C:\Users\bxsxvc\Desktop\Готовый софт\OpenBruteCore\OpenBruteCore\obj\Debug\OpenBruteCore.Properties.Resources.resources
+C:\Users\bxsxvc\Desktop\Готовый софт\OpenBruteCore\OpenBruteCore\obj\Debug\OpenBruteCore.csproj.GenerateResource.cache
+C:\Users\bxsxvc\Desktop\Готовый софт\OpenBruteCore\OpenBruteCore\obj\Debug\OpenBruteCore.csproj.CopyComplete
+C:\Users\bxsxvc\Desktop\Готовый софт\OpenBruteCore\OpenBruteCore\obj\Debug\OpenBruteCore.exe
+C:\Users\bxsxvc\Desktop\Готовый софт\OpenBruteCore\OpenBruteCore\obj\Debug\OpenBruteCore.pdb
+C:\Users\bxsxvc\Desktop\Готовый софт\OpenBruteCore\OpenBruteCore\bin\Debug\OpenBruteCore.exe.CodeAnalysisLog.xml
+C:\Users\bxsxvc\Desktop\Готовый софт\OpenBruteCore\OpenBruteCore\bin\Debug\OpenBruteCore.exe.lastcodeanalysissucceeded

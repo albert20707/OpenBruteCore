@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenBruteCore.Class
+namespace OpenBruteCore
 {
-    public class Helper
+    public static class Helper
     {
         public static Random Rand = new Random();
         public static string GetProxy()
         {
-            return Convert.ToString(globalList.proxyList[Rand.Next(0, globalList.proxyList.Count)]);
+            return Convert.ToString(GlobalList.ProxyList[Rand.Next(0, GlobalList.ProxyList.Count)]);
         }
     }
 }
