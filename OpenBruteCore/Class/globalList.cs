@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace OpenBruteCore
 {
@@ -23,7 +19,6 @@ namespace OpenBruteCore
         public static List<Thread> threadList = new List<Thread>();
         public static int good = 0, bad = 0, error = 0, projecterror = 0, corerror = 0;
         public static string time = DateTime.Now.ToString("HH_mm_ss");
-        public static string folderName = "RESULT-FOLDER/[" + GlobalList.time + "]";
-
+        public static string folderName = "RESULT-FOLDER/[" + time + "]";
     }
 }
